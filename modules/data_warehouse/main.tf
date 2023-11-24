@@ -76,8 +76,12 @@ resource "google_storage_bucket" "raw_bucket" {
   public_access_prevention = "enforced"
 
   depends_on = [time_sleep.wait_after_apis]
+  
+  labels = {
+    data-warehouse = "true",
+    make-it-mine   = "true"
+  }
 
-  labels = var.labels
 }
 
 # Sleep for 120 seconds to allow the workflow to execute and finish setup
