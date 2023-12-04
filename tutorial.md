@@ -121,6 +121,7 @@ done < "roles.txt"
 
 ---
 **Create Terraform input file**
+
 Change the working directory to `modules/data_warehouse`. Inside the `data_warehouse` directory, create a file named `input.tfvars`.
 
 Find the sample content below and modify it by providing the respective details.
