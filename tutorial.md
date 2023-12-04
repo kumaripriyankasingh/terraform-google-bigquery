@@ -78,9 +78,9 @@ Provide the region (e.g. us-central1) where the top level deployment resources w
 ---
 **Deployment Name**
 
-Use the following command to list the deployments:
+Run the following command to get the existing deployment name:
 ```bash
-gcloud infra-manager deployments list --location <var>REGION></var> --filter="labels.goog-solutions-console-deployment-name:* AND labels.goog-solutions-console-solution-id:data-warehouse"
+gcloud infra-manager deployments list --location <var>REGION</var> --filter="labels.goog-solutions-console-deployment-name:* AND labels.goog-solutions-console-solution-id:data-warehouse"
 ```
 
 ```
