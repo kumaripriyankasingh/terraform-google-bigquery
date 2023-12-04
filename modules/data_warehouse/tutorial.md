@@ -19,9 +19,8 @@ Here are the details of the DataWarehouse With BigQuery Jump Start Solution chos
 Solution Guide: [here](https://cloud.google.com/solutions/data-warehouse)
 
 The code for the solution is avaiable at the following location
-* Infrastructure code is present as part of `./main.tf`
+* Infrastructure code is present as part of `./modules/data_warehouse/main.tf`
 * Application code directory is located under `./modules/data_warehouse/src`
-
 
 ## Explore or Edit the solution as per your requirement
 
@@ -42,6 +41,14 @@ Please note: to open your recently used workspace:
 * Choose the desired workspace.
 
 ---
+**Navigate to Data Warehouse module directory**
+
+Open your terminal and change the working directory to the `modules/data_warehouse` directory using the `cd` command:
+
+```bash
+cd modules/data_warehouse
+```
+
 **Automated deployment**
 
 Execute the below command if you want an automated deployment to happen without following the full tutorial.
@@ -122,7 +129,7 @@ done < "roles.txt"
 ---
 **Create Terraform input file**
 
-Change the working directory to `modules/data_warehouse`. Inside the `data_warehouse` directory, create a file named `input.tfvars`.
+Create a file named `input.tfvars`.
 
 Find the sample content below and modify it by providing the respective details.
 ```
