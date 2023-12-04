@@ -28,7 +28,9 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --role="$role"
 done < "roles.txt"
 
-echo -e "Update the labels for the 'google_storage_bucket' named 'raw_bucket' in the './main.tf' file with the following content:\n{
+sed -i '/^resource "google_storage_bucket" "raw_bucket" {/,/^}/ s/labels = var.labels/labels = { data-warehouse = "true", make-it-mine = "true" }/' main.tf
+
+echo -e "Labels for the 'google_storage_bucket' named 'raw_bucket' in the './main.tf' file have been updated to the following instead of reading from 'var.labels'. You can modify their values\n{
   \"data-warehouse\": \"true\",
   \"make-it-mine\": \"true\"
 }"
