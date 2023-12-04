@@ -28,11 +28,13 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --role="$role"
 done < "roles.txt"
 
-echo "Replace the labels for google_storage_bucket named raw_bucket in ./main.tf file"
-sed -i '/^resource "google_storage_bucket" "raw_bucket" {/,/^}/ s/labels = var.labels/labels = { data-warehouse = "true", make-it-mine = "true" }/' main.tf
+#echo "Replace the labels for google_storage_bucket named raw_bucket in ./main.tf file with below content"
+#echo "{ data-warehouse = "true", make-it-mine = "true" }"
+#sed -i '/^resource "google_storage_bucket" "raw_bucket" {/,/^}/ s/labels = var.labels/labels = { data-warehouse = "true", make-it-mine = "true" }/' main.tf
 
+echo -e "Update the labels for the 'google_storage_bucket' named 'raw_bucket' in the './main.tf' file with the following content:\n{ \"data-warehouse\": \"true\", \"make-it-mine\": \"true\" }"
 
-#read -p "Once done, press Enter to continue..."
+read -p "Once done, press Enter to continue..."
 
 cat <<EOF > input.tfvars
 region="us-central1"
