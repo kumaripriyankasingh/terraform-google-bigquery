@@ -28,11 +28,11 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --role="$role"
 done < "roles.txt"
 
-echo "Replace the following values in ./main.tf file"
-echo -e "locals {\n  api_image = \"gcr.io/${PROJECT_ID}/three-tier-app-be:${IMAGE_TAG}\"\n  fe_image  = \"gcr.io/${PROJECT_ID}/three-tier-app-fe:${IMAGE_TAG}\"\n}"
+echo "Replace the labels for google_storage_bucket named raw_bucket in ./main.tf file"
+sed -i '/^resource "google_storage_bucket" "raw_bucket" {/,/^}/ s/labels = var.labels/labels = { data-warehouse = "true", make-it-mine = "true" }/' main.tf
 
 
-read -p "Once done, press Enter to continue..."
+#read -p "Once done, press Enter to continue..."
 
 cat <<EOF > input.tfvars
 region="us-central1"
