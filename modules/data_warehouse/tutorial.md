@@ -43,8 +43,7 @@ Please note: to open your recently used workspace:
 ---
 **Navigate to Data Warehouse module directory**
 
-Open your terminal and change the working directory to the `modules/data_warehouse` directory using the `cd` command:
-
+Use the following command to change the working directory to the `modules/data_warehouse`:
 ```bash
 cd modules/data_warehouse
 ```
