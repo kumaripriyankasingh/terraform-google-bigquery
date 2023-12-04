@@ -20,12 +20,19 @@ Solution Guide: [here](https://cloud.google.com/solutions/data-warehouse)
 
 The code for the solution is avaiable at the following location
 * Infrastructure code is present as part of `./main.tf`
-* Application code directory is located under `./src`
+* Application code directory is located under `./modules/data_warehouse/src`
 
 
 ## Explore or Edit the solution as per your requirement
 
-<placeholder>
+As an example, you can edit `main.tf` file in `./modules/data_warehouse/` to update labels for resource type: `google_storage_bucket` and name: `raw_bucket` like below
+
+```
+ labels = {
+    data-warehouse = "true",
+    make-it-mine   = "true"
+  }
+```
 
 NOTE: The changes in infrastructure may lead to reduction or increase in the incurred cost.
 
@@ -37,7 +44,7 @@ Please note: to open your recently used workspace:
 ---
 **Automated deployment**
 
-Execute the below command if you want to an automated deployment to happen without following the full tutorial.
+Execute the below command if you want an automated deployment to happen without following the full tutorial.
 
 The step is optional and you can continue with the full tutorial if you want to understand the individual steps involved in the script.
 
@@ -62,17 +69,22 @@ gcloud config get project
 ```
 Use above output to set the <var>PROJECT_ID</var>
 ```
+---
+**Deployment Region**
 
+```
+Provide the region (e.g. us-central1) where the top level deployment resources were created for the deployment <var>REGION</var>
+```
 ---
 **Deployment Name**
 
 Use the following command to list the deployments:
 ```bash
-gcloud infra-manager deployments list --location us-central1 --filter="labels.goog-solutions-console-deployment-name:*"
+gcloud infra-manager deployments list --location <var>REGION></var> --filter="labels.goog-solutions-console-deployment-name:* AND labels.goog-solutions-console-solution-id:data-warehouse"
 ```
 
 ```
-Use above output to set the <var>DEPLOYMENT_NAME</var>
+Use the NAME value of the above output to set the <var>DEPLOYMENT_NAME</var>
 ```
 
 
@@ -82,70 +94,38 @@ Use above output to set the <var>DEPLOYMENT_NAME</var>
 ---
 **Fetch Deployment details**
 ```bash
-gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location us-central1
+gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location <var>REGION</var>
 ```
 From the output of this command, note down the input values provided in the existing deployment in the `terraformBlueprint.inputValues` section.
 
 Also note the serviceAccount from the output of this command. The value of this field is of the form 
 ```
-projects/<var>PROJECT_ID</var>/serviceAccounts/<serice_account_value>@<var>PROJECT_ID</var>.iam.gserviceaccount.com
+projects/<var>PROJECT_ID</var>/serviceAccounts/<serice-account>@<var>PROJECT_ID</var>.iam.gserviceaccount.com
 ```
 
 ```
-Note <serice_account_value> part and set the <var>SERVICE_ACCOUNT</var> value.
+Note <service-account> part and set the <var>SERVICE_ACCOUNT</var> value.
 You can also set it to any exising service account.
 ```
 
 ---
 **Assign the required roles to the service account**
 ```bash
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/aiplatform.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/bigquery.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/config.agent"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/datalineage.viewer"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/eventarc.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/iam.serviceAccountAdmin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/iam.serviceAccountUser"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/logging.configWriter"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/pubsub.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/resourcemanager.projectIamAdmin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/serviceusage.serviceUsageAdmin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/storage.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/workflows.admin"
-
+while IFS= read -r role || [[ -n "$role" ]]
+do \
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> \
+  --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" \
+  --role="$role"
+done < "roles.txt"
 ```
 
 ---
 **Create Terraform input file**
-
-Create `input.tfvars` file.
+Change the working directory to `modules/data_warehouse`. Inside the `data_warehouse` directory, create a file named `input.tfvars`.
 
 Find the sample content below and modify it by providing the respective details.
 ```
+delete_contents_on_destroy=True
 region="us-central1"
 project_id = "<var>PROJECT_ID</var>"
 deployment_name = "<var>DEPLOYMENT_NAME</var>"
@@ -160,7 +140,7 @@ labels = {
 
 Execute the following command to trigger the re-deployment. 
 ```bash
-gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/us-central1/deployments/<var>DEPLOYMENT_NAME</var> --service-account projects/<var>PROJECT_ID</var>/serviceAccounts/<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com --local-source="." --inputs-file=./input.tfvars --labels="modification-reason=make-it-mine,goog-solutions-console-deployment-name=<var>DEPLOYMENT_NAME</var>,goog-solutions-console-solution-id=data-warehouse"
+gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/<var>REGION</var>/deployments/<var>DEPLOYMENT_NAME</var> --service-account projects/<var>PROJECT_ID</var>/serviceAccounts/<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com --local-source="." --inputs-file=./input.tfvars --labels="modification-reason=make-it-mine,goog-solutions-console-deployment-name=<var>DEPLOYMENT_NAME</var>,goog-solutions-console-solution-id=data-warehouse"
 ```
 
 ---
@@ -169,7 +149,7 @@ gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/
 Execute the following command to get the deployment details.
 
 ```bash
-gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location us-central1
+gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location <var>REGION</var>
 ```
 
 Monitor your deployment at [JSS deployment page](https://console.cloud.google.com/products/solutions/deployments?pageState=(%22deployments%22:(%22f%22:%22%255B%257B_22k_22_3A_22Labels_22_2C_22t_22_3A13_2C_22v_22_3A_22_5C_22modification-reason%2520_3A%2520make-it-mine_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22deployment.labels_22%257D%255D%22))).
