@@ -133,7 +133,6 @@ Create a file named `input.tfvars`.
 
 Find the sample content below and modify it by providing the respective details.
 ```
-delete_contents_on_destroy=True
 region="us-central1"
 project_id = "<var>PROJECT_ID</var>"
 deployment_name = "<var>DEPLOYMENT_NAME</var>"
