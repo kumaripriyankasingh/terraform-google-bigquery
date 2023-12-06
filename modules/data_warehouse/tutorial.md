@@ -55,6 +55,7 @@ Execute the below command if you want an automated deployment to happen without 
 The step is optional and you can continue with the full tutorial if you want to understand the individual steps involved in the script.
 
 ```bash
+chmod +x ./deploy.sh
 ./deploy.sh
 ```
 
@@ -147,7 +148,7 @@ labels = {
 
 Execute the following command to trigger the re-deployment. 
 ```bash
-gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/<var>REGION</var>/deployments/<var>DEPLOYMENT_NAME</var> --service-account projects/<var>PROJECT_ID</var>/serviceAccounts/<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com --local-source="." --inputs-file=./input.tfvars --labels="modification-reason=make-it-mine,goog-solutions-console-deployment-name=<var>DEPLOYMENT_NAME</var>,goog-solutions-console-solution-id=data-warehouse"
+gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/<var>REGION</var>/deployments/<var>DEPLOYMENT_NAME</var> --service-account projects/<var>PROJECT_ID</var>/serviceAccounts/<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com --local-source="." --inputs-file=./input.tfvars --labels="modification-reason=make-it-mine,goog-solutions-console-deployment-name=<var>DEPLOYMENT_NAME</var>,goog-solutions-console-solution-id=data-warehouse,goog-config-partner=sc"
 ```
 
 ---
