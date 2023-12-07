@@ -8,9 +8,9 @@
 
 # Customize DataWarehouse With BigQuery Solution
 
-This tutorial provides the steps for you to build your own proof of concept solution based on the chosen Jumpstart Solution and deploy it. You can customize the chosen Jump start solutions (JSS) deployments by creating your own copy of the source code. You can modify the infrastructure and application code as needed and redeploy the solutions with the changes.
+This tutorial provides the steps for you to build your own proof of concept solution based on the deployed [Data warehouse with BigQuery](https://console.cloud.google.com/products/solutions/details/data-warehouse) Jump Start Solution (JSS) and deploy it. You can customize the Jump Start Solution (JSS) deployment by creating your own copy of the source code. You can modify the infrastructure and application code as needed and redeploy the solution with the changes.
 
-Each solution should be edited and deployed by one user at a time to avoid conflicts.
+The solution should be edited and deployed by one user at a time to avoid conflicts. Multiple users editing and updating the same deployment in the same GCP project can lead to conflicts.
 
 ## Know your solution
 
@@ -19,7 +19,7 @@ Here are the details of the DataWarehouse With BigQuery Jump Start Solution chos
 Solution Guide: [here](https://cloud.google.com/solutions/data-warehouse)
 
 The code for the solution is avaiable at the following location
-* Infrastructure code is present as part of `./modules/data_warehouse/main.tf`
+* Infrastructure code is present as part of <walkthrough-editor-open-file filePath="./modules/data_warehouse/main.tf">`./modules/data_warehouse/main.tf`</walkthrough-editor-open-file>
 * Application code directory is located under `./modules/data_warehouse/src`
 
 ## Explore or Edit the solution as per your requirement
@@ -129,8 +129,7 @@ done < "roles.txt"
 ---
 **Create Terraform input file**
 
-Create a file named `input.tfvars`.
-
+Create a file named `input.tfvars` in the current directory.
 Find the sample content below and modify it by providing the respective details.
 ```
 region="us-central1"
@@ -140,6 +139,8 @@ labels = {
   "goog-solutions-console-deployment-name" = "<var>DEPLOYMENT_NAME</var>",
   "goog-solutions-console-solution-id" = "data-warehouse"
 }
+force_destroy = true
+deletion_protection = false
 ```
 
 ---
