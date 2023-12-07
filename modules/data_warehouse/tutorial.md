@@ -14,12 +14,17 @@ The solution should be edited and deployed by one user at a time to avoid confli
 
 ## Know your solution
 
+NOTE: Open the directory where the repository is cloned as a workspace in the editor:
+* Go to the `File` menu.
+* Select `Open Workspace`.
+* Choose the directory where the repository has been cloned.
+
 Here are the details of the DataWarehouse With BigQuery Jump Start Solution chosen by you.
 
 Solution Guide: [here](https://cloud.google.com/solutions/data-warehouse)
 
 The code for the solution is avaiable at the following location
-* Infrastructure code is present as part of <walkthrough-editor-open-file filePath="./modules/data_warehouse/main.tf">`./modules/data_warehouse/main.tf`</walkthrough-editor-open-file>
+* Infrastructure code is present as part of <walkthrough-editor-open-file filePath="./modules/data_warehouse/main.tf">./modules/data_warehouse/main.tf</walkthrough-editor-open-file>
 * Application code directory is located under `./modules/data_warehouse/src`
 
 ## Explore or Edit the solution as per your requirement
@@ -35,11 +40,6 @@ As an example, you can edit `main.tf` file in `./modules/data_warehouse/` to upd
 
 NOTE: The changes in infrastructure may lead to reduction or increase in the incurred cost.
 
-Please note: to open your recently used workspace:
-* Go to the `File` menu.
-* Select `Open Recent Workspace`.
-* Choose the desired workspace.
-
 ---
 **Navigate to Data Warehouse module directory**
 
@@ -50,15 +50,12 @@ cd modules/data_warehouse
 
 **Automated deployment**
 
-Execute the below command if you want an automated deployment to happen without following the full tutorial.
-
-The step is optional and you can continue with the full tutorial if you want to understand the individual steps involved in the script.
+Execute the <walkthrough-editor-open-file filePath="./deploy.sh">deploy.sh</walkthrough-editor-open-file> script if you want an automated deployment to happen without following the full tutorial.
+This step is optional and you can continue with the full tutorial if you want to understand the individual steps involved in the script.
 
 ```bash
-chmod +x ./deploy.sh
 ./deploy.sh
 ```
-
 
 ## Gather the required information for intializing gcloud command
 
@@ -129,7 +126,7 @@ done < "roles.txt"
 ---
 **Create Terraform input file**
 
-Create a file named `input.tfvars` in the current directory.
+Create an `input.tfvars` file in the current directory.
 Find the sample content below and modify it by providing the respective details.
 ```
 region="us-central1"
